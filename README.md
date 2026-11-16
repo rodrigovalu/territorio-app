@@ -1,56 +1,52 @@
-# Welcome to your Expo app 👋
+# Território
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+App de corrida com disputa de territórios. O mapa é dividido em hexágonos de **10 km de ponta a ponta** (≈ 65 km²). Quem somar mais km dentro de um hexágono durante o mês é o dono dele. A disputa recomeça todo dia 1º (fuso de Brasília).
 
-## Get started
+**Plataforma:** Android (Expo SDK 58 / React Native 0.88). O código já é compatível com iOS, mas a configuração de iOS ainda não foi feita.
 
-1. Install dependencies
+## Funcionalidades
 
-   ```bash
-   npm install
-   ```
+- Login com Google (nativo) via Supabase Auth
+- Aceite dos Termos e da Política de Privacidade (LGPD), com versionamento
+- Mapa com os territórios coloridos e transparentes na cor do dono
+- Gravação de corrida por GPS com a tela apagada (serviço em primeiro plano, sem permissão de localização em segundo plano)
+- Pausar, retomar, descartar; fila offline para enviar quando voltar a internet
+- Ranking geral do mês e ranking de cada território
+- Perfil: nome, cor, histórico, sair, **excluir conta e todos os dados**
 
-2. Start the app
+## Estrutura
 
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **src/app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
+```
+src/app/                 telas (Expo Router)
+  login.tsx, consent.tsx, legal.tsx
+  (tabs)/index.tsx       mapa de territórios
+  (tabs)/run.tsx         gravação da corrida
+  (tabs)/ranking.tsx     ranking do mês
+  (tabs)/profile.tsx     perfil, histórico, exclusão de conta
+  territory/[id].tsx     ranking de um território
+src/lib/                 auth, supabase (sessão criptografada), api, tracking (GPS)
+supabase/
+  migrations/            tabelas, RLS e funções SQL
+  functions/submit-run   recebe o GPS bruto, valida e grava (antifraude)
+  functions/delete-account
+  functions/_shared/     grade hexagonal + validação (usadas pelo app E pelo servidor)
+tests/                   testes da grade e da validação
+docs/                    configuração, segurança, privacidade
 ```
 
-This command will move the starter code to the **example** directory and create a blank **src/app** directory where you can start developing.
+## Começando
 
-### Other setup steps
+Siga o passo a passo em **[docs/SETUP.md](docs/SETUP.md)**. Em resumo:
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+1. Criar projeto no Supabase, aplicar a migration e publicar as Edge Functions.
+2. Criar as credenciais OAuth no Google Cloud (Web + Android) e ativar o provedor Google no Supabase.
+3. Criar a chave do Google Maps (Android).
+4. Copiar `.env.example` para `.env` e preencher.
+5. `npm install` → `npx eas-cli build --profile development --platform android`.
 
-## Learn more
+```bash
+npm run typecheck   # TypeScript
+npm test            # testes da grade e antifraude
+```
 
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
-
-## Join the community
-
-Join our community of developers creating universal apps.
-
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Segurança: veja [docs/SEGURANCA.md](docs/SEGURANCA.md).

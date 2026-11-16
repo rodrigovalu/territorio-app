@@ -1,0 +1,46 @@
+# Termos de Uso e Política de Privacidade — Território
+
+> Versão 2026-11. Preencha os campos entre colchetes e revise com um profissional jurídico antes de publicar. Mantenha este texto igual ao de `src/legal.ts`.
+
+## Resumo
+
+O Território registra suas corridas pelo GPS do celular para somar quilômetros em regiões do mapa. Quem corre mais em uma região durante o mês é o dono dela. Outros usuários veem apenas o seu nome, a sua cor e quantos km você somou em cada região — nunca o seu trajeto.
+
+## 1. Quem é o controlador dos dados
+
+[NOME / RAZÃO SOCIAL], [CPF/CNPJ], [endereço]. Encarregado (DPO): [nome], e-mail [e-mail do encarregado].
+
+## 2. Quais dados coletamos
+
+- Da sua conta Google: nome, e-mail, foto de perfil e um identificador da conta.
+- Das corridas: pontos de localização (latitude, longitude, horário e precisão) coletados SOMENTE enquanto você grava uma corrida, com uma notificação visível na tela.
+- Dados derivados: distância, duração e km somados em cada território.
+Não coletamos localização fora das corridas, nem contatos, fotos, microfone ou dados de saúde.
+
+## 3. Para que usamos
+
+- Calcular a distância das suas corridas e os km em cada território (execução do contrato, art. 7º, V, LGPD).
+- Montar os rankings mensais visíveis aos demais usuários.
+- Prevenir fraudes (por exemplo, km registrados de carro), com base no legítimo interesse (art. 7º, IX).
+Não vendemos seus dados e não os usamos para publicidade.
+
+## 4. O que outros usuários veem
+
+Seu nome de exibição, foto, cor e os km somados em cada território no mês. O percurso das corridas e os horários ficam visíveis apenas para você.
+
+## 5. Onde os dados ficam e por quanto tempo
+
+Os dados são armazenados no Supabase (infraestrutura em nuvem), com acesso restrito por regras de segurança. Podem ser processados fora do Brasil, com as salvaguardas do art. 33 da LGPD. Mantemos seus dados enquanto a conta existir. Ao excluir a conta, tudo é apagado definitivamente.
+
+## 6. Seus direitos
+
+Você pode, a qualquer momento: acessar e corrigir seus dados (tela Perfil), excluir a conta e todos os dados (Perfil → Excluir conta), revogar este consentimento e pedir informações pelo e-mail do encarregado.
+
+## 7. Termos de uso
+
+- Use o app apenas para registrar corridas e caminhadas reais, feitas por você.
+- É proibido usar veículos, GPS falso ou qualquer meio para inflar a distância. Corridas suspeitas são recusadas automaticamente e contas que fraudarem podem ser excluídas.
+- Corra com segurança: respeite o trânsito, não use o celular enquanto atravessa ruas e não entre em propriedades privadas ou áreas de risco para conquistar territórios.
+- O app é oferecido "no estado em que se encontra"; não nos responsabilizamos por lesões, acidentes ou danos decorrentes da prática esportiva.
+- Nomes de exibição ofensivos podem ser alterados ou removidos.
+- Foro: comarca de [cidade/UF].

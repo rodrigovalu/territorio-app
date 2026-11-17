@@ -14,19 +14,21 @@ O Território registra suas corridas pelo GPS do celular para somar quilômetros
 
 - Da sua conta Google: nome, e-mail, foto de perfil e um identificador da conta.
 - Das corridas: pontos de localização (latitude, longitude, horário e precisão) coletados SOMENTE enquanto você grava uma corrida, com uma notificação visível na tela.
-- Dados derivados: distância, duração e km somados em cada território.
+- Dados derivados: distância, tempo, pace, parciais por km, subida acumulada, recordes e km somados em cada território.
+- Os dias em que você abre o app (apenas a data), usados nas medalhas de acessos semanais.
 Não coletamos localização fora das corridas, nem contatos, fotos, microfone ou dados de saúde.
 
 ## 3. Para que usamos
 
 - Calcular a distância das suas corridas e os km em cada território (execução do contrato, art. 7º, V, LGPD).
 - Montar os rankings mensais visíveis aos demais usuários.
+- Mostrar seu histórico, estatísticas e conceder medalhas.
 - Prevenir fraudes (por exemplo, km registrados de carro), com base no legítimo interesse (art. 7º, IX).
 Não vendemos seus dados e não os usamos para publicidade.
 
 ## 4. O que outros usuários veem
 
-Seu nome de exibição, foto, cor e os km somados em cada território no mês. O percurso das corridas e os horários ficam visíveis apenas para você.
+Seu nome de exibição, foto, cor e os km somados em cada território no mês. O percurso das corridas, os horários, as estatísticas e as medalhas ficam visíveis apenas para você.
 
 ## 5. Onde os dados ficam e por quanto tempo
 

@@ -33,3 +33,18 @@ export function currentMonthInfo(now = new Date()) {
 export function fmtDate(iso: string) {
   return new Date(iso).toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
 }
+
+/** ritmo a partir de segundos por km: 332 → "5:32" */
+export function fmtPaceS(secPerKm: number | null | undefined) {
+  if (secPerKm == null || !Number.isFinite(secPerKm) || secPerKm <= 0 || secPerKm > 3600) return '--:--';
+  const r = Math.round(secPerKm);
+  return `${Math.floor(r / 60)}:${String(r % 60).padStart(2, '0')}`;
+}
+
+export function fmtDayLong(iso: string) {
+  return new Date(iso).toLocaleDateString('pt-BR', { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' });
+}
+
+export function fmtTime(iso: string) {
+  return new Date(iso).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+}

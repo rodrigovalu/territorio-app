@@ -51,13 +51,14 @@ Deno.serve(async (req) => {
   if (!v.ok) return json({ error: v.reason }, 422);
 
   // Trajeto compacto, só para o dono ver
-  const route = (body.points as { t: number; lat: number; lng: number }[]).map((p) => [
+  const route = (body.points as { t: number; lat: number; lng: number; alt?: number | null }[]).map((p) => [
     Math.round(p.lat * 1e6) / 1e6,
     Math.round(p.lng * 1e6) / 1e6,
     p.t,
+    typeof p.alt === 'number' ? Math.round(p.alt) : null,
   ]);
 
-  const { data: runId, error } = await admin.rpc('apply_run', {
+  const { data, error } = await admin.rpc('apply_run', {
     p_user_id: user.id,
     p_client_run_id: body.clientRunId,
     p_started_at: new Date(v.startedAt).toISOString(),
@@ -67,6 +68,7 @@ Deno.serve(async (req) => {
     p_route: route,
     p_flags: v.flags,
     p_cells: v.cells,
+    p_stats: { avgPaceS: v.avgPaceS, elevationGainM: v.elevationGainM, splits: v.splits },
   });
   if (error) {
     console.error('apply_run', error);
@@ -74,9 +76,13 @@ Deno.serve(async (req) => {
   }
 
   return json({
-    runId,
+    runId: data.run_id,
     distanceKm: v.distanceKm,
     movingSeconds: v.movingSeconds,
+    avgPaceS: v.avgPaceS,
+    elevationGainM: v.elevationGainM,
+    splits: v.splits,
     cells: v.cells,
+    newAchievements: data.new_achievements ?? [],
   });
 });

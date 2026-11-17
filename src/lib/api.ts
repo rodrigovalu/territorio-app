@@ -1,6 +1,6 @@
 import { FunctionsHttpError } from '@supabase/supabase-js';
 
-import type { GpsPoint } from '../../supabase/functions/_shared/validateRun';
+import type { GpsPoint, Split } from '../../supabase/functions/_shared/validateRun';
 import { TERMS_VERSION } from './env';
 import { supabase } from './supabase';
 
@@ -40,6 +40,48 @@ export type RunRow = {
   ended_at: string;
   distance_km: number;
   moving_seconds: number;
+  avg_pace_s: number | null;
+  elevation_gain_m: number;
+};
+
+export type RunDetail = RunRow & {
+  splits: Split[];
+  /** [lat, lng, t, alt] */
+  route: [number, number, number, number | null][];
+  best_km_s: number | null;
+};
+
+export type Medal = {
+  id: string;
+  title: string;
+  description: string;
+  tier: 'bronze' | 'prata' | 'ouro' | 'diamante';
+  icon: string;
+};
+
+export type MedalProgress = Medal & {
+  category: string;
+  threshold: number;
+  lower_is_better: boolean;
+  value: number | null;
+  earned_at: string | null;
+};
+
+export type MyStats = {
+  week_km: number;
+  week_runs: number;
+  month_km: number;
+  month_runs: number;
+  total_km: number;
+  total_runs: number;
+  total_s: number;
+  week_visits: number;
+  best_km_s: number | null;
+  best_5k_s: number | null;
+  best_10k_s: number | null;
+  best_21k_s: number | null;
+  longest_km: number | null;
+  best_pace_s: number | null;
 };
 
 const num = <T extends Record<string, unknown>>(rows: T[] | null, keys: (keyof T)[]): T[] =>
@@ -68,14 +110,53 @@ export async function getLeaderboard(): Promise<LeaderRow[]> {
   return num<LeaderRow>(data, ['total_km']);
 }
 
-export async function getMyRuns(limit = 30): Promise<RunRow[]> {
+const RUN_COLS = 'id, started_at, ended_at, distance_km, moving_seconds, avg_pace_s, elevation_gain_m';
+
+/** Histórico paginado (todas as corridas) */
+export async function getMyRuns(page = 0, pageSize = 30): Promise<RunRow[]> {
+  const from = page * pageSize;
   const { data, error } = await supabase
     .from('runs')
-    .select('id, started_at, ended_at, distance_km, moving_seconds')
+    .select(RUN_COLS)
     .order('started_at', { ascending: false })
-    .limit(limit);
+    .range(from, from + pageSize - 1);
   if (error) throw error;
   return num<RunRow>(data, ['distance_km']);
+}
+
+export async function getRun(id: string): Promise<RunDetail> {
+  const { data, error } = await supabase
+    .from('runs')
+    .select(`${RUN_COLS}, splits, route, best_km_s`)
+    .eq('id', id)
+    .single();
+  if (error) throw error;
+  return { ...(data as RunDetail), distance_km: Number(data.distance_km) };
+}
+
+export async function getMyStats(): Promise<MyStats> {
+  const { data, error } = await supabase.rpc('get_my_stats');
+  if (error) throw error;
+  const o = data as Record<string, number | null>;
+  for (const k of ['week_km', 'month_km', 'total_km', 'longest_km']) if (o[k] != null) o[k] = Number(o[k]);
+  return o as unknown as MyStats;
+}
+
+export async function getMyAchievements(): Promise<MedalProgress[]> {
+  const { data, error } = await supabase.rpc('get_my_achievements');
+  if (error) throw error;
+  return (data as MedalProgress[]).map((m) => ({
+    ...m,
+    threshold: Number(m.threshold),
+    value: m.value == null ? null : Number(m.value),
+  }));
+}
+
+/** Registra o acesso de hoje; devolve medalhas novas */
+export async function recordVisit(): Promise<Medal[]> {
+  const { data, error } = await supabase.rpc('record_visit');
+  if (error) throw error;
+  return (data as Medal[]) ?? [];
 }
 
 export async function acceptTerms() {
@@ -106,8 +187,12 @@ export type SubmitResult = {
   runId: string;
   distanceKm: number;
   movingSeconds: number;
+  avgPaceS?: number | null;
+  elevationGainM?: number;
+  splits?: Split[];
   cells?: Record<string, number>;
   duplicate?: boolean;
+  newAchievements?: Medal[];
 };
 
 export async function submitRun(clientRunId: string, points: GpsPoint[]): Promise<SubmitResult> {

@@ -3,7 +3,7 @@ import { useCallback, useState } from 'react';
 import { FlatList, RefreshControl, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Dot, Sub, Title, styles as ui } from '@/components/ui';
+import { Dot, Sub, styles as ui } from '@/components/ui';
 import { getLeaderboard, type LeaderRow } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
 import { currentMonthInfo, fmtKm } from '@/lib/format';
@@ -35,7 +35,7 @@ export default function Ranking() {
   );
 
   return (
-    <SafeAreaView style={ui.screen} edges={['top']}>
+    <SafeAreaView style={ui.screen} edges={[]}>
       <FlatList
         data={rows}
         keyExtractor={(r) => r.user_id}
@@ -43,7 +43,6 @@ export default function Ranking() {
         refreshControl={<RefreshControl refreshing={loading} onRefresh={load} tintColor={colors.accent} />}
         ListHeaderComponent={
           <View style={{ marginBottom: 10 }}>
-            <Title>Ranking</Title>
             <Sub>Territórios dominados em {month.label}</Sub>
             {error && <Text style={ui.error}>{error}</Text>}
           </View>

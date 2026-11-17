@@ -10,9 +10,14 @@ App de corrida com disputa de territórios. O mapa é dividido em hexágonos de 
 - Aceite dos Termos e da Política de Privacidade (LGPD), com versionamento
 - Mapa com os territórios coloridos e transparentes na cor do dono
 - Gravação de corrida por GPS com a tela apagada (serviço em primeiro plano, sem permissão de localização em segundo plano)
+- Durante a corrida: distância, tempo, **pace médio**, pace atual, progresso do km; contagem regressiva 3-2-1
+- **Avisos de voz** a cada 1, 2 ou 5 km (tempo, pace médio e pace do último km), funcionando com a tela apagada
 - Pausar, retomar, descartar; fila offline para enviar quando voltar a internet
+- **Histórico de todas as corridas** com mapa do percurso, parciais por km, km mais rápido e subida acumulada
+- Resumo da semana/mês/total e **recordes pessoais** (km mais rápido, melhor 5/10/21 km, maior distância)
+- **24 medalhas** em 4 níveis (bronze, prata, ouro, diamante): primeiro 1/5/10/21/42 km, número de corridas, km acumulados, **acessos na semana (3, 5, 7 dias)**, semanas seguidas, tempo nos 5 e 10 km, subida e territórios — concedidas só pelo servidor, com tela de comemoração
 - Ranking geral do mês e ranking de cada território
-- Perfil: nome, cor, histórico, sair, **excluir conta e todos os dados**
+- Perfil: nome, cor, sair, **excluir conta e todos os dados**
 
 ## Estrutura
 
@@ -20,9 +25,12 @@ App de corrida com disputa de territórios. O mapa é dividido em hexágonos de 
 src/app/                 telas (Expo Router)
   login.tsx, consent.tsx, legal.tsx
   (tabs)/index.tsx       mapa de territórios
-  (tabs)/run.tsx         gravação da corrida
-  (tabs)/ranking.tsx     ranking do mês
-  (tabs)/profile.tsx     perfil, histórico, exclusão de conta
+  (tabs)/activities.tsx  resumo, recordes e histórico
+  (tabs)/run.tsx         gravação da corrida, voz e configurações
+  (tabs)/medals.tsx      medalhas e progresso
+  (tabs)/profile.tsx     perfil e exclusão de conta
+  activity/[id].tsx      detalhe da corrida (mapa, parciais)
+  ranking.tsx            ranking do mês
   territory/[id].tsx     ranking de um território
 src/lib/                 auth, supabase (sessão criptografada), api, tracking (GPS)
 supabase/

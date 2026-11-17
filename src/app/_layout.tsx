@@ -5,9 +5,12 @@ import { DarkTheme, Stack, ThemeProvider } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
 import { useEffect } from 'react';
-import { ActivityIndicator, View } from 'react-native';
+import { ActivityIndicator, AppState, View } from 'react-native';
 
+import { MedalCelebration } from '@/components/Medal';
+import { recordVisit } from '@/lib/api';
 import { AuthProvider, useAuth } from '@/lib/auth';
+import { celebrate } from '@/lib/celebrate';
 import { TERMS_VERSION } from '@/lib/env';
 import { colors } from '@/theme';
 
@@ -24,6 +27,17 @@ function Gate() {
   useEffect(() => {
     if (ready) SplashScreen.hideAsync();
   }, [ready]);
+
+  const active = !!session && !!profile?.terms_accepted_at && profile.terms_version === TERMS_VERSION;
+
+  // Registra o acesso do dia (medalhas de acessos semanais) ao abrir e ao voltar para o app
+  useEffect(() => {
+    if (!active) return;
+    const visit = () => recordVisit().then(celebrate).catch(() => {});
+    visit();
+    const sub = AppState.addEventListener('change', (st) => st === 'active' && visit());
+    return () => sub.remove();
+  }, [active]);
 
   if (!ready) return null;
 
@@ -51,6 +65,8 @@ function Gate() {
           name="territory/[id]"
           options={{ presentation: 'modal', headerShown: true, title: 'Território' }}
         />
+        <Stack.Screen name="activity/[id]" options={{ headerShown: true, title: 'Corrida' }} />
+        <Stack.Screen name="ranking" options={{ headerShown: true, title: 'Ranking do mês' }} />
       </Stack.Protected>
       <Stack.Screen name="legal" options={{ headerShown: true, title: 'Termos e privacidade' }} />
     </Stack>
@@ -63,6 +79,7 @@ export default function RootLayout() {
       <StatusBar style="light" />
       <AuthProvider>
         <Gate />
+        <MedalCelebration />
       </AuthProvider>
     </ThemeProvider>
   );

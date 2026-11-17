@@ -114,3 +114,35 @@ describe('validateRun', () => {
     expect(validateRun([{ t: 'a' }]).ok).toBe(false);
   });
 });
+
+describe('splits, pace e elevação', () => {
+  it('gera um split por km com pace coerente', () => {
+    const r = validateRun(fakeRun(5.3, 3)); // 3 m/s = 5:33/km
+    expect(r.ok).toBe(true);
+    if (!r.ok) return;
+    expect(r.splits.map((s) => s.km)).toEqual([1, 2, 3, 4, 5]);
+    for (const s of r.splits) expect(s.s).toBeGreaterThanOrEqual(331), expect(s.s).toBeLessThanOrEqual(335);
+    expect(r.avgPaceS).toBeGreaterThanOrEqual(331);
+    expect(r.avgPaceS).toBeLessThanOrEqual(335);
+    expect(r.splits[4].totalS).toBeCloseTo(5 * 333.3, -1);
+  });
+
+  it('soma ganho de elevação ignorando oscilação pequena', () => {
+    const pts = fakeRun(2).map((p, i) => ({ ...p, alt: 800 + (i % 2) * 2 + i * 0.1 }));
+    const r = validateRun(pts);
+    expect(r.ok).toBe(true);
+    if (r.ok) {
+      const climb = pts[pts.length - 1].alt! - pts[0].alt!;
+      expect(r.elevationGainM).toBeGreaterThan(climb - 8);
+      expect(r.elevationGainM).toBeLessThan(climb + 8);
+    }
+  });
+
+  it('acumulador ao vivo avisa cada km', async () => {
+    const { newAcc, accPush } = await import('../supabase/functions/_shared/validateRun.ts');
+    const st = newAcc();
+    const kms: number[] = [];
+    for (const p of fakeRun(3.2)) for (const sp of accPush(st, p)) kms.push(sp.km);
+    expect(kms).toEqual([1, 2, 3]);
+  });
+});

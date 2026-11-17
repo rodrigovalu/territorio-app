@@ -1,14 +1,13 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
-import { Link, useFocusEffect } from 'expo-router';
-import { useCallback, useEffect, useState } from 'react';
+import { Link, router } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { Button, Sub, Title, styles as ui } from '@/components/ui';
-import { deleteAccount, getMyRuns, updateProfile, type RunRow } from '@/lib/api';
+import { deleteAccount, updateProfile } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
-import { fmtDate, fmtDuration, fmtKm } from '@/lib/format';
 import { clearLocalData } from '@/lib/tracking';
 import { RUNNER_COLORS, colors } from '@/theme';
 
@@ -17,19 +16,12 @@ export default function Profile() {
   const [name, setName] = useState(profile?.display_name ?? '');
   const [color, setColor] = useState(profile?.color ?? RUNNER_COLORS[0]);
   const [saving, setSaving] = useState(false);
-  const [runs, setRuns] = useState<RunRow[]>([]);
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setName(profile?.display_name ?? '');
     setColor(profile?.color ?? RUNNER_COLORS[0]);
   }, [profile]);
-
-  useFocusEffect(
-    useCallback(() => {
-      getMyRuns().then(setRuns).catch(() => {});
-    }, []),
-  );
 
   const dirty = name.trim() !== profile?.display_name || color !== profile?.color;
 
@@ -85,10 +77,6 @@ export default function Profile() {
     );
   }
 
-  const monthKm = runs
-    .filter((r) => new Date(r.started_at).getMonth() === new Date().getMonth())
-    .reduce((a, r) => a + r.distance_km, 0);
-
   return (
     <SafeAreaView style={ui.screen} edges={['top']}>
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 40 }}>
@@ -128,17 +116,11 @@ export default function Profile() {
         <Button title="Salvar" onPress={onSave} loading={saving} disabled={!dirty} />
         {msg && <Text style={[ui.sub, { marginTop: 8 }]}>{msg}</Text>}
 
-        <Text style={[s.label, { marginTop: 28 }]}>Minhas corridas · {fmtKm(monthKm)} km neste mês</Text>
-        {runs.length === 0 && <Text style={ui.sub}>Nenhuma corrida ainda.</Text>}
-        {runs.map((r) => (
-          <View key={r.id} style={ui.row}>
-            <View style={{ flex: 1 }}>
-              <Text style={ui.rowText}>{fmtDate(r.started_at)}</Text>
-              <Text style={ui.rowSmall}>{fmtDuration(r.moving_seconds)}</Text>
-            </View>
-            <Text style={ui.rowValue}>{fmtKm(r.distance_km, 2)} km</Text>
-          </View>
-        ))}
+        <View style={{ marginTop: 28, gap: 10 }}>
+          <Button title="Minhas corridas" variant="secondary" onPress={() => router.navigate('/activities')} />
+          <Button title="Minhas medalhas" variant="secondary" onPress={() => router.navigate('/medals')} />
+          <Button title="Ranking do mês" variant="secondary" onPress={() => router.push('/ranking')} />
+        </View>
 
         <View style={{ marginTop: 28, gap: 10 }}>
           <Link href="/legal" style={{ color: colors.accent, fontSize: 15, paddingVertical: 6 }}>

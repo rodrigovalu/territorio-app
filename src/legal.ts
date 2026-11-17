@@ -25,7 +25,8 @@ export const LEGAL_SECTIONS: { title: string; body: string }[] = [
       '• Da sua conta Google: nome, e-mail, foto de perfil e um identificador da conta.\n' +
       '• Das corridas: pontos de localização (latitude, longitude, horário e precisão) coletados SOMENTE ' +
       'enquanto você grava uma corrida, com uma notificação visível na tela.\n' +
-      '• Dados derivados: distância, duração e km somados em cada território.\n' +
+      '• Dados derivados: distância, tempo, pace, parciais por km, subida acumulada, recordes e km somados em cada território.\n' +
+      '• Os dias em que você abre o app (apenas a data), usados nas medalhas de acessos semanais.\n' +
       'Não coletamos localização fora das corridas, nem contatos, fotos, microfone ou dados de saúde.',
   },
   {
@@ -33,14 +34,15 @@ export const LEGAL_SECTIONS: { title: string; body: string }[] = [
     body:
       '• Calcular a distância das suas corridas e os km em cada território (execução do contrato, art. 7º, V, LGPD).\n' +
       '• Montar os rankings mensais visíveis aos demais usuários.\n' +
+      '• Mostrar seu histórico, estatísticas e conceder medalhas.\n' +
       '• Prevenir fraudes (por exemplo, km registrados de carro), com base no legítimo interesse (art. 7º, IX).\n' +
       'Não vendemos seus dados e não os usamos para publicidade.',
   },
   {
     title: '4. O que outros usuários veem',
     body:
-      'Seu nome de exibição, foto, cor e os km somados em cada território no mês. O percurso das corridas e ' +
-      'os horários ficam visíveis apenas para você.',
+      'Seu nome de exibição, foto, cor e os km somados em cada território no mês. O percurso das corridas, ' +
+      'os horários, as estatísticas e as medalhas ficam visíveis apenas para você.',
   },
   {
     title: '5. Onde os dados ficam e por quanto tempo',

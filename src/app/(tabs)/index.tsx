@@ -120,13 +120,18 @@ export default function MapScreen() {
       </MapView>
 
       <SafeAreaView edges={['top']} style={s.top} pointerEvents="box-none">
-        <View style={s.card}>
-          <Text style={s.brand}>
-            TERRI<Text style={{ color: colors.accent }}>TÓRIO</Text>
-          </Text>
-          <Text style={s.month}>
-            {month.label} · {month.daysLeft === 0 ? 'último dia' : `faltam ${month.daysLeft} dias`}
-          </Text>
+        <View style={[s.card, { flexDirection: 'row', alignItems: 'center' }]}>
+          <View style={{ flex: 1 }}>
+            <Text style={s.brand}>
+              TERRI<Text style={{ color: colors.accent }}>TÓRIO</Text>
+            </Text>
+            <Text style={s.month}>
+              {month.label} · {month.daysLeft === 0 ? 'último dia' : `faltam ${month.daysLeft} dias`}
+            </Text>
+          </View>
+          <Pressable onPress={() => router.push('/ranking')} style={s.rankBtn} accessibilityRole="button">
+            <Text style={s.rankText}>♛ Ranking</Text>
+          </Pressable>
         </View>
         {region.latitudeDelta > MAX_DELTA && (
           <View style={[s.card, { marginTop: 8 }]}>
@@ -163,6 +168,8 @@ const s = StyleSheet.create({
   brand: { color: colors.ink, fontSize: 20, fontWeight: '900', letterSpacing: 0.5 },
   month: { color: colors.mute, fontSize: 12.5, marginTop: 2 },
   hint: { color: colors.ink, fontSize: 13.5 },
+  rankBtn: { borderWidth: 1, borderColor: colors.accent, borderRadius: 999, paddingHorizontal: 12, paddingVertical: 7 },
+  rankText: { color: colors.accent, fontWeight: '800', fontSize: 13 },
   bottom: { position: 'absolute', left: 12, right: 12, bottom: 14, flexDirection: 'row', alignItems: 'flex-end', gap: 10 },
   legend: { flex: 1, backgroundColor: 'rgba(14,17,22,0.85)', borderRadius: 10, padding: 8 },
   legendText: { color: colors.mute, fontSize: 12 },

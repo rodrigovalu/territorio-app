@@ -4,27 +4,30 @@ Tempo estimado: 1 a 2 horas na primeira vez. Contas necessárias: Supabase (grá
 
 ---
 
-## 1. Supabase (backend)
+## 1. Supabase (backend) — ✅ já configurado
 
-1. Crie um projeto em <https://supabase.com> (região: **South America (São Paulo)**).
-2. Instale a CLI e vincule o projeto:
-   ```bash
-   npm i -g supabase
-   supabase login
-   supabase link --project-ref SEU_PROJECT_REF
-   ```
-3. Aplique o banco (tabelas, regras RLS e funções):
-   ```bash
-   supabase db push
-   ```
-4. Publique as funções:
-   ```bash
-   supabase functions deploy submit-run
-   supabase functions deploy delete-account
-   ```
-   `SUPABASE_URL` e `SUPABASE_SERVICE_ROLE_KEY` já ficam disponíveis para as funções automaticamente. **Nunca** coloque a service_role key no app.
-5. Em **Authentication → Sign In / Providers**, desative "Email" (o app usa só Google) e deixe "Allow new users to sign up" ligado.
-6. Anote, em **Project Settings → API**: `Project URL` e a chave `anon` / `publishable`.
+Projeto **territorio** (`bkuvpcdlggyxufesdjpr`, região São Paulo):
+
+- URL: `https://bkuvpcdlggyxufesdjpr.supabase.co` (já em `.env.example`)
+- As duas migrations de `supabase/migrations/` já foram aplicadas (tabelas, RLS, funções, 24 medalhas).
+- As Edge Functions `submit-run` e `delete-account` já estão publicadas.
+
+Falta apenas, no painel do Supabase:
+
+1. **Authentication → Sign In / Providers**: desative "Email" (o app usa só Google).
+2. **Authentication → Providers → Google**: configure conforme o passo 2.4 abaixo.
+
+Para alterações futuras pela CLI:
+
+```bash
+npm i -g supabase
+supabase login
+supabase link --project-ref bkuvpcdlggyxufesdjpr
+supabase db push                       # novas migrations
+supabase functions deploy submit-run   # após mudar a validação
+```
+
+> Os avisos do *Security Advisor* sobre funções `SECURITY DEFINER` executáveis por usuários logados e sobre `cell_month_totals` sem policy são intencionais: são as RPCs do app (que só devolvem dados agregados ou do próprio usuário) e uma tabela sem acesso direto.
 
 ## 2. Google Cloud: login com Google
 

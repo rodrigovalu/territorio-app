@@ -58,7 +58,22 @@ const config: ExpoConfig = {
     ],
     ['react-native-maps', { androidGoogleMapsApiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY }],
     '@react-native-google-signin/google-signin',
-    ['expo-build-properties', { android: { usesCleartextTraffic: false } }],
+    [
+      'expo-build-properties',
+      {
+        android: {
+          usesCleartextTraffic: false,
+          // O R8 (otimização do SDK 58) removia classes que o WorkManager/Room criam por reflexão
+          // e o app fechava ao abrir. Desligado até validarmos regras de proguard em todas as libs.
+          enableMinifyInReleaseBuilds: false,
+          enableShrinkResourcesInReleaseBuilds: false,
+          extraProguardRules: [
+            '-keep class androidx.work.impl.WorkDatabase_Impl { *; }',
+            '-keep class * extends androidx.room.RoomDatabase { <init>(); }',
+          ].join('\n'),
+        },
+      },
+    ],
   ],
   experiments: { typedRoutes: true, reactCompiler: true },
   extra: {

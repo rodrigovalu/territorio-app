@@ -1,10 +1,11 @@
 import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
-import { Link, router } from 'expo-router';
+import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
 import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { LegalLink } from '@/components/LegalModal';
 import { Button, Sub, Title, styles as ui } from '@/components/ui';
 import { deleteAccount, updateProfile } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
@@ -123,9 +124,7 @@ export default function Profile() {
         </View>
 
         <View style={{ marginTop: 28, gap: 10 }}>
-          <Link href="/legal" style={{ color: colors.accent, fontSize: 15, paddingVertical: 6 }}>
-            Termos de Uso e Política de Privacidade
-          </Link>
+          <LegalLink label="Termos de Uso e Política de Privacidade" style={{ fontSize: 15, paddingVertical: 6 }} />
           <Button title="Sair" variant="secondary" onPress={onLogout} />
           <Button title="Excluir minha conta" variant="danger" onPress={onDelete} />
         </View>

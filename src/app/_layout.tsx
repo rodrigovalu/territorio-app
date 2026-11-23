@@ -68,7 +68,6 @@ function Gate() {
         <Stack.Screen name="activity/[id]" options={{ headerShown: true, title: 'Corrida' }} />
         <Stack.Screen name="ranking" options={{ headerShown: true, title: 'Ranking do mês' }} />
       </Stack.Protected>
-      <Stack.Screen name="legal" options={{ headerShown: true, title: 'Termos e privacidade' }} />
     </Stack>
   );
 }

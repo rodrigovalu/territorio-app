@@ -1,8 +1,8 @@
-import { Link } from 'expo-router';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
+import { LegalLink } from '@/components/LegalModal';
 import { Button, styles as ui } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
 import { HEX_CORNER_TO_CORNER_KM } from '@/lib/grid';
@@ -44,9 +44,7 @@ export default function Login() {
         {error && <Text style={ui.error}>{error}</Text>}
         <Text style={s.legal}>
           Ao entrar você poderá ler e aceitar os{' '}
-          <Link href="/legal" style={s.link}>
-            Termos de Uso e a Política de Privacidade
-          </Link>
+          <LegalLink label="Termos de Uso e a Política de Privacidade" />
           .
         </Text>
       </View>

@@ -8,6 +8,7 @@ import type { ExpoConfig } from 'expo/config';
 const config: ExpoConfig = {
   name: 'Território',
   slug: 'territorio',
+  owner: 'rodrigovalu',
   version: '1.0.0',
   orientation: 'portrait',
   icon: './assets/images/icon.png',
@@ -61,7 +62,7 @@ const config: ExpoConfig = {
   ],
   experiments: { typedRoutes: true, reactCompiler: true },
   extra: {
-    eas: { projectId: process.env.EAS_PROJECT_ID },
+    eas: { projectId: 'b84d31be-3946-4c34-93cc-78d12b4101c5' },
   },
 };
 

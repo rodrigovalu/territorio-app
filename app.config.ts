@@ -6,7 +6,7 @@ import type { ExpoConfig } from 'expo/config';
  * definição — a segurança está nas regras RLS do banco.
  */
 const config: ExpoConfig = {
-  name: 'Território',
+  name: 'Pace Hunter',
   slug: 'territorio',
   owner: 'rodrigovalus-team',
   version: '1.0.0',
@@ -20,7 +20,7 @@ const config: ExpoConfig = {
     googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? (require('fs').existsSync('./google-services.json') ? './google-services.json' : undefined),
     versionCode: 1,
     adaptiveIcon: {
-      backgroundColor: '#0E1116',
+      backgroundColor: '#1D1C1E',
       foregroundImage: './assets/images/android-icon-foreground.png',
       backgroundImage: './assets/images/android-icon-background.png',
       monochromeImage: './assets/images/android-icon-monochrome.png',

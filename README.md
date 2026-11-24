@@ -1,4 +1,4 @@
-# Território
+# Pace Hunter
 
 App de corrida com disputa de territórios. O mapa é dividido em hexágonos de **40 km²** (≈ 7,85 km de ponta a ponta). Quem somar mais km dentro de um hexágono durante o mês é o dono dele. A disputa recomeça todo dia 1º (fuso de Brasília).
 

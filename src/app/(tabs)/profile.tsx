@@ -32,7 +32,7 @@ export default function Profile() {
         const ok = await enablePush(true);
         if (!ok) {
           setAlertsOn(false);
-          Alert.alert('Notificações bloqueadas', 'Permita as notificações do Território nas configurações do Android.');
+          Alert.alert('Notificações bloqueadas', 'Permita as notificações do Pace Hunter nas configurações do Android.');
         }
       } else await disablePush();
     } catch (e) {

@@ -1,3 +1,4 @@
+import { Image } from 'expo-image';
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -28,9 +29,12 @@ export default function Login() {
   return (
     <SafeAreaView style={[ui.screen, s.wrap]}>
       <View style={s.hero}>
-        <Text style={s.brand}>
-          TERRI<Text style={{ color: colors.accent }}>TÓRIO</Text>
-        </Text>
+        <Image
+          source={require('@/assets/images/logo-pacehunter.png')}
+          style={s.logo}
+          contentFit="contain"
+          accessibilityLabel="Pace Hunter"
+        />
         <Text style={s.tag}>Corra, some quilômetros e domine a sua região.</Text>
         <View style={s.points}>
           <Text style={s.point}>⬡  Territórios de {HEX_AREA_KM2} km² no mapa</Text>
@@ -54,8 +58,8 @@ export default function Login() {
 
 const s = StyleSheet.create({
   wrap: { padding: 24, justifyContent: 'space-between' },
-  hero: { marginTop: 80 },
-  brand: { color: colors.ink, fontSize: 48, fontWeight: '900', letterSpacing: 1 },
+  hero: { marginTop: 60 },
+  logo: { width: '100%', aspectRatio: 1420 / 547 },
   tag: { color: colors.mute, fontSize: 17, marginTop: 8 },
   points: { marginTop: 36, gap: 14 },
   point: { color: colors.ink, fontSize: 16 },

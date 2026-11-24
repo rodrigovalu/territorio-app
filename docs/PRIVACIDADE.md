@@ -1,10 +1,10 @@
-# Termos de Uso e Política de Privacidade — Território
+# Termos de Uso e Política de Privacidade — Pace Hunter
 
-> Versão 2026-11. Preencha os campos entre colchetes e revise com um profissional jurídico antes de publicar. Mantenha este texto igual ao de `src/legal.ts`.
+> Preencha os campos entre colchetes e revise com um profissional jurídico antes de publicar. Mantenha este texto igual ao de `src/legal.ts`.
 
 ## Resumo
 
-O Território registra suas corridas pelo GPS do celular para somar quilômetros em regiões do mapa. Quem corre mais em uma região durante o mês é o dono dela. Outros usuários veem apenas o seu nome, a sua cor e quantos km você somou em cada região — nunca o seu trajeto.
+O Pace Hunter registra suas corridas pelo GPS do celular para somar quilômetros em regiões do mapa. Quem corre mais em uma região durante o mês é o dono dela. Outros usuários veem apenas o seu nome, a sua cor e quantos km você somou em cada região — nunca o seu trajeto.
 
 ## 1. Quem é o controlador dos dados
 
@@ -16,6 +16,7 @@ O Território registra suas corridas pelo GPS do celular para somar quilômetros
 - Das corridas: pontos de localização (latitude, longitude, horário e precisão) coletados SOMENTE enquanto você grava uma corrida, com uma notificação visível na tela.
 - Dados derivados: distância, tempo, pace, parciais por km, subida acumulada, recordes e km somados em cada território.
 - Os dias em que você abre o app (apenas a data), usados nas medalhas de acessos semanais.
+- Um identificador do aparelho para notificações (se você permitir), usado para avisar quando um território seu está em perigo.
 Não coletamos localização fora das corridas, nem contatos, fotos, microfone ou dados de saúde.
 
 ## 3. Para que usamos

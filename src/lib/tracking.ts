@@ -165,7 +165,7 @@ async function startUpdates() {
     showsBackgroundLocationIndicator: true,
     foregroundService: {
       notificationTitle: 'Corrida em andamento',
-      notificationBody: 'O Território está registrando seu percurso.',
+      notificationBody: 'O Pace Hunter está registrando seu percurso.',
       notificationColor: '#FF6A2B',
       killServiceOnDestroy: false,
     },

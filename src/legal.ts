@@ -10,7 +10,7 @@ export const LEGAL_SECTIONS: { title: string; body: string }[] = [
   {
     title: 'Resumo',
     body:
-      'O Território registra suas corridas pelo GPS do celular para somar quilômetros em regiões do mapa. ' +
+      'O Pace Hunter registra suas corridas pelo GPS do celular para somar quilômetros em regiões do mapa. ' +
       'Quem corre mais em uma região durante o mês é o dono dela. Outros usuários veem apenas o seu nome, ' +
       'a sua cor e quantos km você somou em cada região — nunca o seu trajeto.',
   },

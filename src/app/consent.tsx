@@ -31,12 +31,12 @@ export default function Consent() {
     <SafeAreaView style={ui.screen}>
       <ScrollView contentContainerStyle={{ padding: 20, paddingBottom: 24 }}>
         <Title>Olá, {profile?.display_name?.split(' ')[0]}!</Title>
-        <Sub>Antes de começar, leia como o Território usa os seus dados.</Sub>
+        <Sub>Antes de começar, leia como o Pace Hunter usa os seus dados.</Sub>
 
         <View style={s.box}>
           <Text style={s.boxTitle}>📍 Uso da localização</Text>
           <Text style={s.boxText}>
-            O Território coleta a sua localização apenas enquanto você grava uma corrida, inclusive com a
+            O Pace Hunter coleta a sua localização apenas enquanto você grava uma corrida, inclusive com a
             tela apagada. Uma notificação fica visível o tempo todo durante a gravação. Fora das corridas, nenhuma
             localização é coletada.
           </Text>

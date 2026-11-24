@@ -113,7 +113,7 @@ export default function RunScreen() {
     // Divulgação clara antes de pedir a permissão (exigência do Google Play)
     Alert.alert(
       'Permitir localização',
-      'Para medir a corrida, o Território usa o GPS somente enquanto você grava, inclusive com a tela apagada. ' +
+      'Para medir a corrida, o Pace Hunter usa o GPS somente enquanto você grava, inclusive com a tela apagada. ' +
         'Uma notificação fica visível durante toda a gravação.',
       [
         { text: 'Agora não', style: 'cancel' },

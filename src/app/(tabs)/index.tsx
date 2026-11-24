@@ -1,4 +1,5 @@
 import * as Location from 'expo-location';
+import { SymbolView } from 'expo-symbols';
 import { router, useFocusEffect } from 'expo-router';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
@@ -59,6 +60,31 @@ export default function MapScreen() {
       }
     })();
   }, []);
+
+  // botão "centralizar": vai até a posição atual do corredor
+  const [locating, setLocating] = useState(false);
+  async function centerOnMe() {
+    if (locating) return;
+    setLocating(true);
+    try {
+      let perm = await Location.getForegroundPermissionsAsync();
+      if (perm.status !== 'granted') perm = await Location.requestForegroundPermissionsAsync();
+      if (perm.status !== 'granted') return;
+      setHasLocation(true);
+      const pos =
+        (await Location.getLastKnownPositionAsync({ maxAge: 60_000 })) ??
+        (await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced }));
+      const delta = Math.min(regionRef.current.latitudeDelta, 0.35);
+      mapRef.current?.animateToRegion(
+        { latitude: pos.coords.latitude, longitude: pos.coords.longitude, latitudeDelta: delta, longitudeDelta: delta },
+        500,
+      );
+    } catch {
+      // sem posição disponível agora
+    } finally {
+      setLocating(false);
+    }
+  }
 
   const load = useCallback(async (r: Region) => {
     if (r.latitudeDelta > MAX_DELTA) {
@@ -135,7 +161,7 @@ export default function MapScreen() {
         customMapStyle={mapStyleDark}
         initialRegion={DEFAULT_REGION}
         showsUserLocation={hasLocation}
-        showsMyLocationButton={hasLocation}
+        showsMyLocationButton={false}
         toolbarEnabled={false}
         onRegionChangeComplete={(r) => {
           regionRef.current = r;
@@ -179,7 +205,7 @@ export default function MapScreen() {
         <View style={[s.card, { flexDirection: 'row', alignItems: 'center' }]}>
           <View style={{ flex: 1 }}>
             <Text style={s.brand}>
-              TERRI<Text style={{ color: colors.accent }}>TÓRIO</Text>
+              PACE <Text style={{ color: colors.accent }}>HUNTER</Text>
             </Text>
             <Text style={s.month}>
               {month.label} · {month.daysLeft === 0 ? 'último dia' : `faltam ${month.daysLeft} dias`}
@@ -214,9 +240,19 @@ export default function MapScreen() {
             Cada território ≈ {Math.round(HEX_AREA_KM2)} km² · Na tela, você domina {mineCount}
           </Text>
         </View>
-        <Pressable style={s.fab} onPress={() => router.navigate('/run')} accessibilityRole="button">
-          <Text style={s.fabText}>▶ Correr</Text>
-        </Pressable>
+        <View style={{ alignItems: 'center', gap: 10 }}>
+          <Pressable
+            onPress={centerOnMe}
+            hitSlop={14}
+            accessibilityRole="button"
+            accessibilityLabel="Centralizar o mapa na minha posição"
+            style={({ pressed }) => ({ opacity: pressed || locating ? 0.5 : 1, padding: 4 })}>
+            <SymbolView name={{ android: 'my_location', ios: 'location.fill' }} tintColor={colors.accent} size={34} />
+          </Pressable>
+          <Pressable style={s.fab} onPress={() => router.navigate('/run')} accessibilityRole="button">
+            <Text style={s.fabText}>▶ Correr</Text>
+          </Pressable>
+        </View>
       </View>
     </View>
   );
@@ -233,7 +269,7 @@ const s = StyleSheet.create({
     borderColor: colors.line,
     marginTop: 8,
   },
-  brand: { color: colors.ink, fontSize: 20, fontWeight: '900', letterSpacing: 0.5 },
+  brand: { color: colors.ink, fontSize: 21, fontWeight: '900', fontStyle: 'italic', letterSpacing: 0.5 },
   month: { color: colors.mute, fontSize: 12.5, marginTop: 2 },
   hint: { color: colors.ink, fontSize: 13.5 },
   bell: { paddingHorizontal: 8, paddingVertical: 4, marginRight: 6 },

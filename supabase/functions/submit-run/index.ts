@@ -6,6 +6,7 @@
  * território e grava tudo numa transação via apply_run (service_role).
  */
 import { adminClient, getUser, json, readJson } from '../_shared/http.ts';
+import { sendTerritoryAlerts } from '../_shared/push.ts';
 import { validateRun } from '../_shared/validateRun.ts';
 
 const MAX_BODY_BYTES = 3 * 1024 * 1024; // ~30 mil pontos
@@ -74,6 +75,8 @@ Deno.serve(async (req) => {
     console.error('apply_run', error);
     return json({ error: 'falha ao salvar a corrida' }, 500);
   }
+
+  await sendTerritoryAlerts(admin, data.alerts ?? []);
 
   return json({
     runId: data.run_id,

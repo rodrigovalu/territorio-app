@@ -89,5 +89,20 @@ Para testar sem o servidor de desenvolvimento: `--profile preview` gera um APK i
 
 ## Ajustes do jogo
 
-- Tamanho dos territórios: `HEX_CORNER_TO_CORNER_KM` em `supabase/functions/_shared/hexgrid.ts`. **Defina antes de lançar**; mudar depois embaralha todos os territórios.
+- Tamanho dos territórios: `HEX_AREA_KM2` em `supabase/functions/_shared/hexgrid.ts`. **Defina antes de lançar**; mudar depois embaralha todos os territórios.
 - Regras antifraude (velocidade máxima, precisão do GPS, limite por corrida): `RULES` em `supabase/functions/_shared/validateRun.ts`. Depois de mudar, publique de novo a função `submit-run`.
+
+## 7. Notificações push (alertas de território)
+
+Os alertas aparecem sempre dentro do app (🔔 no mapa). Para que cheguem também como **notificação no celular**, o Android exige o Firebase:
+
+1. Acesse <https://console.firebase.google.com> → **Adicionar projeto** → escolha o projeto do Google Cloud **Territorio** (o mesmo do login).
+2. No projeto, **Adicionar app → Android**, pacote `br.com.territorio.app` → baixe o **google-services.json**.
+3. No expo.dev → projeto Territorio → **Environment variables** → **Add** → nome `GOOGLE_SERVICES_JSON`, tipo **File**, envie o arquivo, ambientes preview/production/development.
+4. No Firebase: ⚙️ **Configurações do projeto** → **Contas de serviço** → **Gerar nova chave privada** (baixa um .json).
+5. No expo.dev → **Credentials** → **Android** → `br.com.territorio.app` → **FCM V1 service account key** → envie esse .json.
+6. Faça um novo build.
+
+Regras dos alertas (em `supabase/migrations/20261124000000_territory_alerts.sql`):
+- **Em perigo:** o 2º colocado chegou a menos de 20% (ou 1 km) do dono. No máximo 1 aviso por território a cada 12 h.
+- **Perdido:** alguém passou o dono.

@@ -207,3 +207,44 @@ export async function deleteAccount() {
   const { error } = await supabase.functions.invoke('delete-account', { body: { confirm: 'EXCLUIR' } });
   if (error) throw await functionError(error);
 }
+
+// ---------------------------------------------------------------------------
+// Alertas de território e notificações
+export type TerritoryAlert = {
+  id: string;
+  kind: 'threat' | 'lost';
+  cell_id: string;
+  challenger_name: string;
+  my_km: number;
+  challenger_km: number;
+  created_at: string;
+  read_at: string | null;
+  current_owner_is_me: boolean | null;
+  current_gap_km: number | null;
+};
+
+export async function getMyAlerts(): Promise<TerritoryAlert[]> {
+  const { data, error } = await supabase.rpc('get_my_alerts', { p_limit: 50 });
+  if (error) throw error;
+  return (data as TerritoryAlert[]).map((a) => ({
+    ...a,
+    my_km: Number(a.my_km),
+    challenger_km: Number(a.challenger_km),
+    current_gap_km: a.current_gap_km == null ? null : Number(a.current_gap_km),
+  }));
+}
+
+export async function markAlertsRead() {
+  const { error } = await supabase.rpc('mark_alerts_read');
+  if (error) throw error;
+}
+
+export async function registerPushToken(token: string) {
+  const { error } = await supabase.rpc('register_push_token', { p_token: token });
+  if (error) throw error;
+}
+
+export async function unregisterPushToken(token: string) {
+  const { error } = await supabase.rpc('unregister_push_token', { p_token: token });
+  if (error) throw error;
+}

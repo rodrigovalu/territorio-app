@@ -11,6 +11,7 @@ import { MedalCelebration } from '@/components/Medal';
 import { recordVisit } from '@/lib/api';
 import { AuthProvider, useAuth } from '@/lib/auth';
 import { celebrate } from '@/lib/celebrate';
+import { enablePush, isPushEnabled, listenNotificationTaps } from '@/lib/notifications';
 import { TERMS_VERSION } from '@/lib/env';
 import { colors } from '@/theme';
 
@@ -37,6 +38,15 @@ function Gate() {
     visit();
     const sub = AppState.addEventListener('change', (st) => st === 'active' && visit());
     return () => sub.remove();
+  }, [active]);
+
+  // Alertas de território: registra o aparelho para notificações e trata o toque nelas
+  useEffect(() => {
+    if (!active) return;
+    isPushEnabled()
+      .then((on) => on && enablePush(true))
+      .catch(() => {});
+    return listenNotificationTaps();
   }, [active]);
 
   if (!ready) return null;
@@ -67,6 +77,7 @@ function Gate() {
         />
         <Stack.Screen name="activity/[id]" options={{ headerShown: true, title: 'Corrida' }} />
         <Stack.Screen name="ranking" options={{ headerShown: true, title: 'Ranking do mês' }} />
+        <Stack.Screen name="alerts" options={{ headerShown: true, title: 'Alertas de território' }} />
       </Stack.Protected>
     </Stack>
   );

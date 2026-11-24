@@ -16,6 +16,8 @@ const config: ExpoConfig = {
   userInterfaceStyle: 'dark',
   android: {
     package: process.env.ANDROID_PACKAGE ?? 'br.com.territorio.app',
+    // Firebase (necessário para notificações push no Android). No EAS: variável do tipo arquivo GOOGLE_SERVICES_JSON
+    googleServicesFile: process.env.GOOGLE_SERVICES_JSON ?? (require('fs').existsSync('./google-services.json') ? './google-services.json' : undefined),
     versionCode: 1,
     adaptiveIcon: {
       backgroundColor: '#0E1116',
@@ -58,6 +60,7 @@ const config: ExpoConfig = {
     ],
     ['react-native-maps', { androidGoogleMapsApiKey: process.env.GOOGLE_MAPS_ANDROID_API_KEY }],
     '@react-native-google-signin/google-signin',
+    ['expo-notifications', { color: '#FF6A2B', defaultChannel: 'territorio-alertas' }],
     [
       'expo-build-properties',
       {

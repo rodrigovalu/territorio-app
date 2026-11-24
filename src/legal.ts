@@ -27,6 +27,7 @@ export const LEGAL_SECTIONS: { title: string; body: string }[] = [
       'enquanto você grava uma corrida, com uma notificação visível na tela.\n' +
       '• Dados derivados: distância, tempo, pace, parciais por km, subida acumulada, recordes e km somados em cada território.\n' +
       '• Os dias em que você abre o app (apenas a data), usados nas medalhas de acessos semanais.\n' +
+      '• Um identificador do aparelho para notificações (se você permitir), usado para avisar quando um território seu está em perigo.\n' +
       'Não coletamos localização fora das corridas, nem contatos, fotos, microfone ou dados de saúde.',
   },
   {

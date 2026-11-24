@@ -2,13 +2,14 @@ import { GoogleSignin } from '@react-native-google-signin/google-signin';
 import { Image } from 'expo-image';
 import { router } from 'expo-router';
 import { useEffect, useState } from 'react';
-import { Alert, Pressable, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import { Alert, Pressable, ScrollView, StyleSheet, Switch, Text, TextInput, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { LegalLink } from '@/components/LegalModal';
 import { Button, Sub, Title, styles as ui } from '@/components/ui';
 import { deleteAccount, updateProfile } from '@/lib/api';
 import { useAuth } from '@/lib/auth';
+import { disablePush, enablePush, isPushEnabled } from '@/lib/notifications';
 import { clearLocalData } from '@/lib/tracking';
 import { RUNNER_COLORS, colors } from '@/theme';
 
@@ -18,6 +19,26 @@ export default function Profile() {
   const [color, setColor] = useState(profile?.color ?? RUNNER_COLORS[0]);
   const [saving, setSaving] = useState(false);
   const [msg, setMsg] = useState<string | null>(null);
+
+  const [alertsOn, setAlertsOn] = useState(true);
+  useEffect(() => {
+    isPushEnabled().then(setAlertsOn);
+  }, []);
+
+  async function toggleAlerts(v: boolean) {
+    setAlertsOn(v);
+    try {
+      if (v) {
+        const ok = await enablePush(true);
+        if (!ok) {
+          setAlertsOn(false);
+          Alert.alert('Notificações bloqueadas', 'Permita as notificações do Território nas configurações do Android.');
+        }
+      } else await disablePush();
+    } catch (e) {
+      Alert.alert('Erro', (e as Error).message);
+    }
+  }
 
   useEffect(() => {
     setName(profile?.display_name ?? '');
@@ -46,6 +67,7 @@ export default function Profile() {
   }
 
   async function onLogout() {
+    await disablePush(false);
     await clearLocalData();
     await signOut();
   }
@@ -121,6 +143,14 @@ export default function Profile() {
           <Button title="Minhas corridas" variant="secondary" onPress={() => router.navigate('/activities')} />
           <Button title="Minhas medalhas" variant="secondary" onPress={() => router.navigate('/medals')} />
           <Button title="Ranking do mês" variant="secondary" onPress={() => router.push('/ranking')} />
+          <Button title="Alertas de território" variant="secondary" onPress={() => router.push('/alerts')} />
+          <View style={s.toggle}>
+            <View style={{ flex: 1 }}>
+              <Text style={{ color: colors.ink, fontSize: 15 }}>Avisar quando meu território estiver em perigo</Text>
+              <Text style={{ color: colors.mute, fontSize: 12 }}>Notificação quando alguém chegar perto de tomar ou tomar um território seu</Text>
+            </View>
+            <Switch value={alertsOn} onValueChange={toggleAlerts} trackColor={{ true: colors.accent, false: colors.line }} thumbColor="#fff" />
+          </View>
         </View>
 
         <View style={{ marginTop: 28, gap: 10 }}>
@@ -148,5 +178,15 @@ const s = StyleSheet.create({
   },
   colors: { flexDirection: 'row', flexWrap: 'wrap', gap: 10, marginBottom: 16 },
   swatch: { width: 36, height: 36, borderRadius: 18 },
+  toggle: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 12,
+    backgroundColor: colors.panel,
+    borderRadius: 14,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: 14,
+  },
   swatchOn: { borderWidth: 3, borderColor: '#fff' },
 });

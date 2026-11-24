@@ -13,4 +13,4 @@ export const env = {
 };
 
 /** Versão vigente dos termos — precisa bater com accept_terms() no banco. */
-export const TERMS_VERSION = '2026-11';
+export const TERMS_VERSION = '2026-11-24';

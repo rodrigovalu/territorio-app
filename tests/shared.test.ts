@@ -25,14 +25,14 @@ describe('hexgrid', () => {
     }
   });
 
-  it('hexágono tem ~10 km de ponta a ponta e ~65 km²', () => {
-    expect(HEX_CORNER_TO_CORNER_KM).toBe(10);
-    expect(HEX_AREA_KM2).toBeCloseTo(64.95, 1);
+  it('hexágono tem 40 km² (~7,85 km de ponta a ponta)', () => {
+    expect(HEX_AREA_KM2).toBe(40);
+    expect(HEX_CORNER_TO_CORNER_KM).toBeCloseTo(7.85, 2);
     const id = cellFromLatLng(IBIRITE.lat, IBIRITE.lng);
     const b = cellBoundary(id);
     const d = haversineM(b[0].latitude, b[0].longitude, b[3].latitude, b[3].longitude);
-    expect(d / 1000).toBeGreaterThan(9.8);
-    expect(d / 1000).toBeLessThan(10.2);
+    expect(d / 1000).toBeGreaterThan(7.7);
+    expect(d / 1000).toBeLessThan(8.0);
   });
 
   it('centro da célula pertence à própria célula', () => {
@@ -45,7 +45,7 @@ describe('hexgrid', () => {
   it('cellsInBounds cobre a região', () => {
     const cells = cellsInBounds(-20.1, -44.15, -19.95, -43.95);
     expect(cells).toContain(cellFromLatLng(IBIRITE.lat, IBIRITE.lng));
-    expect(cells.length).toBeLessThan(40);
+    expect(cells.length).toBeLessThan(60);
   });
 });
 

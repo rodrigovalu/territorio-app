@@ -1,6 +1,6 @@
 # Território
 
-App de corrida com disputa de territórios. O mapa é dividido em hexágonos de **10 km de ponta a ponta** (≈ 65 km²). Quem somar mais km dentro de um hexágono durante o mês é o dono dele. A disputa recomeça todo dia 1º (fuso de Brasília).
+App de corrida com disputa de territórios. O mapa é dividido em hexágonos de **40 km²** (≈ 7,85 km de ponta a ponta). Quem somar mais km dentro de um hexágono durante o mês é o dono dele. A disputa recomeça todo dia 1º (fuso de Brasília).
 
 **Plataforma:** Android (Expo SDK 58 / React Native 0.88). O código já é compatível com iOS, mas a configuração de iOS ainda não foi feita.
 
@@ -16,6 +16,8 @@ App de corrida com disputa de territórios. O mapa é dividido em hexágonos de 
 - **Histórico de todas as corridas** com mapa do percurso, parciais por km, km mais rápido e subida acumulada
 - Resumo da semana/mês/total e **recordes pessoais** (km mais rápido, melhor 5/10/21 km, maior distância)
 - **24 medalhas** em 4 níveis (bronze, prata, ouro, diamante): primeiro 1/5/10/21/42 km, número de corridas, km acumulados, **acessos na semana (3, 5, 7 dias)**, semanas seguidas, tempo nos 5 e 10 km, subida e territórios — concedidas só pelo servidor, com tela de comemoração
+- Mapa com o **nome do dono** em cada território
+- **Alertas de território**: notificação quando alguém está a menos de 20% de tomar um território seu, e quando ele é tomado
 - Ranking geral do mês e ranking de cada território
 - Perfil: nome, cor, sair, **excluir conta e todos os dados**
 

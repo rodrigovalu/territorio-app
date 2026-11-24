@@ -15,12 +15,12 @@
  * todos os territórios mudariam de lugar e o histórico ficaria inconsistente.
  */
 
-/** Distância de ponta a ponta do hexágono (vértice a vértice), em km. */
-export const HEX_CORNER_TO_CORNER_KM = 10;
-/** Lado do hexágono (= raio do círculo circunscrito), em km. */
-export const HEX_SIDE_KM = HEX_CORNER_TO_CORNER_KM / 2;
-/** Área de cada território, em km². ≈ 64,95 km² */
-export const HEX_AREA_KM2 = ((3 * Math.sqrt(3)) / 2) * HEX_SIDE_KM * HEX_SIDE_KM;
+/** Área de cada território, em km². */
+export const HEX_AREA_KM2 = 40;
+/** Lado do hexágono (= raio do círculo circunscrito), em km. ≈ 3,92 km */
+export const HEX_SIDE_KM = Math.sqrt((2 * HEX_AREA_KM2) / (3 * Math.sqrt(3)));
+/** Distância de ponta a ponta do hexágono (vértice a vértice), em km. ≈ 7,85 km */
+export const HEX_CORNER_TO_CORNER_KM = HEX_SIDE_KM * 2;
 /** Centro da projeção: centro geográfico aproximado do Brasil. */
 export const GRID_ORIGIN = { lat: -15.0, lng: -52.0 } as const;
 

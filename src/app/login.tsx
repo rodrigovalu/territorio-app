@@ -5,7 +5,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { LegalLink } from '@/components/LegalModal';
 import { Button, styles as ui } from '@/components/ui';
 import { useAuth } from '@/lib/auth';
-import { HEX_CORNER_TO_CORNER_KM } from '@/lib/grid';
+import { HEX_AREA_KM2 } from '@/lib/grid';
 import { colors } from '@/theme';
 
 export default function Login() {
@@ -33,7 +33,7 @@ export default function Login() {
         </Text>
         <Text style={s.tag}>Corra, some quilômetros e domine a sua região.</Text>
         <View style={s.points}>
-          <Text style={s.point}>⬡  Territórios de {HEX_CORNER_TO_CORNER_KM} km de ponta a ponta</Text>
+          <Text style={s.point}>⬡  Territórios de {HEX_AREA_KM2} km² no mapa</Text>
           <Text style={s.point}>♛  Quem correr mais no mês é o dono</Text>
           <Text style={s.point}>↻  Todo dia 1º a disputa recomeça</Text>
         </View>
